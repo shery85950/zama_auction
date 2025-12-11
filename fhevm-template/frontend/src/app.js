@@ -168,6 +168,8 @@ async function loadAuctionData() {
         bidderCountEl.textContent = info[4].toString(); // bidderCount
 
         const isEnded = info[3]; // ended
+        const now = Math.floor(Date.now() / 1000);
+        const timeExpired = now >= endTime;
 
         timeRemainingEl.setAttribute('data-endtime', endTime);
         updateTimer(endTime, isEnded);
@@ -177,6 +179,14 @@ async function loadAuctionData() {
             badgeEl.className = "status-badge ended";
             placeBidBtn.disabled = true;
             placeBidBtn.textContent = "Auction Ended";
+        } else if (timeExpired) {
+            // Time expired but endAuction() not called yet
+            badgeEl.textContent = "Ready to End";
+            badgeEl.className = "status-badge ending";
+            badgeEl.style.background = "#f59e0b";
+            placeBidBtn.disabled = false;
+            placeBidBtn.textContent = "🏁 End Auction";
+            placeBidBtn.onclick = endAuction;
         }
 
         // Check user status - SimpleSealedAuction doesn't have getBidderStatus
@@ -328,6 +338,33 @@ function startAutoRefresh() {
             updateTimer(Number(timeRemainingEl.getAttribute('data-endtime') || 0), false);
         }
     }, 1000);
+}
+
+/**
+ * End the auction and determine winner using FHE operations
+ */
+async function endAuction() {
+    if (!contract) {
+        alert("Please connect wallet first");
+        return;
+    }
+
+    try {
+        setLoading(true);
+        console.log("🏁 Ending auction...");
+
+        const tx = await contract.endAuction();
+        await tx.wait();
+
+        alert("✅ Auction ended! Winner determined (encrypted). Click 'Reveal Winner' to decrypt.");
+        loadAuctionData();
+
+    } catch (err) {
+        console.error("End Auction Error:", err);
+        alert("Failed to end auction: " + (err.shortMessage || err.message));
+    } finally {
+        setLoading(false);
+    }
 }
 
 function setLoading(isLoading) {
@@ -543,3 +580,4 @@ const originalLoadAuctionData = loadAuctionData;
 
 // Start
 init();
+s
