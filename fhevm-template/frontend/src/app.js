@@ -411,24 +411,34 @@ async function revealWinner() {
         const encryptedIndexHandle = await contract.getEncryptedWinnerIndex();
         const encryptedBidHandle = await contract.getEncryptedWinningBid();
 
-        console.log("🔓 Starting public decryption...");
+        console.log("🔓 Starting user decryption (requires signature)...");
 
-        // Import publicDecrypt from fheContext
-        const { publicDecrypt } = await import('./fheContext.js');
+        // Import userDecrypt from fheContext
+        const { userDecrypt } = await import('./fheContext.js');
 
-        // Public decrypt the winner index
-        const indexResult = await publicDecrypt(encryptedIndexHandle);
-        console.log("Decrypted winner index:", indexResult.value);
+        // User decrypt the winner index (requires signing)
+        alert("You'll be asked to sign a message to decrypt the winner. This proves you have permission.");
 
-        // Public decrypt the winning bid
-        const bidResult = await publicDecrypt(encryptedBidHandle);
-        console.log("Decrypted winning bid:", bidResult.value);
+        const decryptedIndex = await userDecrypt(
+            encryptedIndexHandle.toString(),
+            CONTARCT_ADDRESS,
+            signer
+        );
+        console.log("Decrypted winner index:", decryptedIndex);
 
-        // Call contract to reveal winner
+        // User decrypt the winning bid
+        const decryptedBid = await userDecrypt(
+            encryptedBidHandle.toString(),
+            CONTARCT_ADDRESS,
+            signer
+        );
+        console.log("Decrypted winning bid:", decryptedBid);
+
+        // Call contract to reveal winner (proof not needed for user decrypt flow)
         const tx = await contract.revealWinner(
-            indexResult.value,
-            bidResult.value,
-            indexResult.proof
+            decryptedIndex,
+            decryptedBid,
+            "0x" // Empty proof for user-triggered reveal
         );
         await tx.wait();
 
@@ -580,5 +590,3 @@ const originalLoadAuctionData = loadAuctionData;
 
 // Start
 init();
-
-
