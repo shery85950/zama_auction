@@ -519,6 +519,7 @@ async function updateWinnerUI() {
             // Show reveal button if auction ended but not revealed
             const info = await contract.getAuctionInfo();
             if (info[3]) { // ended
+                winnerSection.style.display = 'block';
                 winnerSection.innerHTML = `
                     <h3 style="margin: 0 0 10px 0; color: #f59e0b;">⏳ Auction Ended - Winner Not Revealed</h3>
                     <p>Click below to reveal the winner using public decryption:</p>
@@ -527,6 +528,8 @@ async function updateWinnerUI() {
 
                 document.getElementById('reveal-winner-btn')?.addEventListener('click', revealWinner);
             } else {
+                // Auction still active - hide the section completely
+                winnerSection.style.display = 'none';
                 winnerSection.innerHTML = '';
             }
         }
