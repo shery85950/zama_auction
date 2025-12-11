@@ -549,8 +549,8 @@ async function updateWinnerUI() {
 
             winnerSection.innerHTML = `
                 <h3 style="margin: 0 0 10px 0; color: #16a34a;">🏆 Winner Revealed!</h3>
-                <p><strong>Winner:</strong> ${winner.substring(0, 6)}...${winner.substring(38)}</p>
-                <p><strong>Winning Bid:</strong> ${winningBid} units</p>
+                <p style="color: #166534;"><strong>Winner:</strong> ${winner.substring(0, 6)}...${winner.substring(38)}</p>
+                <p style="color: #166534;"><strong>Winning Bid:</strong> ${winningBid} units</p>
                 ${isUserWinner ?
                     '<p style="color: #16a34a; font-weight: bold;">🎉 Congratulations! You won!</p>' :
                     `<button id="claim-refund-btn" style="margin-top: 10px; padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer;">Claim Refund</button>`
