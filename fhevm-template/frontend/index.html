@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zama FHE Auction | Privacy-Preserving Bidding</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+    </div>
+
+    <!-- ... (rest of body remains similar until script) ... -->
+
+    <div class="app-container">
+        <header class="glass-header">
+            <div class="logo-section">
+                <div class="logo-icon">🔒</div>
+                <h1>FHE<span class="highlight">Auction</span></h1>
+            </div>
+            <div class="header-actions">
+                <span id="network-status" class="status-badge hidden">Wrong Network</span>
+                <button id="connect-wallet-btn" class="btn btn-primary">
+                    <span class="btn-text">Connect Wallet</span>
+                </button>
+                <div id="wallet-info" class="wallet-display hidden">
+                    <span id="wallet-address">0x...</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <h2>Sealed-Bid Privacy Auction</h2>
+                <p>Place your bids confidentially using Fully Homomorphic Encryption.</p>
+            </section>
+
+            <!-- Loading State -->
+            <div id="loading-overlay" class="loading-overlay hidden">
+                <div class="spinner"></div>
+                <p>Interacting with the blockchain...</p>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="dashboard-grid">
+                <!-- Left Column: Auction Info -->
+                <div class="card auction-card glass-panel">
+                    <div class="card-header">
+                        <h3>📦 Auction Item</h3>
+                        <span id="auction-status-badge" class="status-badge active">Active</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="item-visual">
+                            <span class="item-emoji">🎨</span>
+                        </div>
+                        <h2 id="auction-title">Loading...</h2>
+
+                        <div class="info-row">
+                            <span class="label">Minimum Bid</span>
+                            <span class="value" id="min-bid">...</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Ends In</span>
+                            <span class="value" id="time-remaining">...</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Participants</span>
+                            <span class="value" id="bidder-count">0</span>
+                        </div>
+
+                        <!-- Admin Actions (Only visible to admin) -->
+                        <div id="admin-actions" class="admin-panel hidden">
+                            <h4>Admin/Seller Controls</h4>
+                            <button id="end-auction-btn" class="btn btn-danger full-width">End Auction</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Actions -->
+                <div class="right-column">
+                    <!-- Bid Placement Card -->
+                    <div class="card bid-card glass-panel">
+                        <div class="card-header">
+                            <h3>💰 Place Encrypted Bid</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="description-text">Your bid amount will be encrypted <strong>before</strong> it
+                                leaves your browser. No one, not even the blockchain node, can see it.</p>
+
+                            <form id="bid-form">
+                                <div class="input-group">
+                                    <label for="bid-amount">Bid Amount (Tokens)</label>
+                                    <input type="number" id="bid-amount" placeholder="e.g. 1000" min="1" step="1">
+                                </div>
+
+                                <button type="submit" id="place-bid-btn" class="btn btn-accent full-width" disabled>
+                                    Place Private Bid
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Status/Winner Card -->
+                    <div class="card status-card glass-panel">
+                        <div class="card-header">
+                            <h3>🔍 Your Status</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="user-status-content">
+                                <p class="status-message">Connect wallet to see your status.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="/src/app.js"></script>
+</body>
+
+</html>
